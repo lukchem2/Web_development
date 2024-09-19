@@ -1,0 +1,20 @@
+.custom-row {
+  display: flex; /* Align all child elements horizontally */
+  justify-content: space-between; /* Pushes left content and blablabla to opposite sides */
+  align-items: center; /* Vertically centers the content */
+  width: 100%; /* Ensures full width row */
+}
+
+.left-content {
+  display: flex; /* Stack image and card body vertically inside the left side */
+  flex-direction: column; /* Ensure vertical stacking of the image and the content */
+}
+
+.card-body {
+  max-width: 300px; /* Control the width of the card content */
+}
+
+.additional-info {
+  margin: 0;
+  white-space: nowrap; /* Prevents text from wrapping */
+}

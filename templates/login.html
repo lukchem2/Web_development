@@ -1,0 +1,25 @@
+{% from 'bootstrap5/form.html' import render_form %}
+{% include 'header.html' %}
+<body>
+
+ <h1 class="row justify-content-center mb-5 pb-3">LOGIN IN</h1>
+ {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <p class="col-lg-8 col-md-10 mx-auto flash" style="color : red; text-align:center;" >{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+ <div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-md-4">  <!-- Adjust column size -->
+            {{ render_form(form) }}  <!-- Render the form -->
+        </div>
+
+        <p class="justify-content-center">Not registered yet</p>
+        <a class ="justify-content-center" href="{{url_for('get_register')}}">Register</a>
+    </div>
+  </div>
+</body>
+{% include 'footer.html' %}

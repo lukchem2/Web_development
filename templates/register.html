@@ -1,0 +1,15 @@
+{% from 'bootstrap5/form.html' import render_form %}
+{% include 'header.html' %}
+<body>
+ <h1 class = "row justify-content-center">REGISTER</h1>
+ <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">  <!-- Adjust column size -->
+            {{ render_form(form) }}  <!-- Render the form -->
+        </div>
+        <p>Already registered</p>
+        <a href="{{url_for('get_logged')}}">Log in</a>
+    </div>
+  </div>
+</body>
+{% include 'footer.html' %}

@@ -1,0 +1,19 @@
+{% from 'bootstrap5/form.html' import render_form %}
+{% include 'header.html' %}
+<style>
+    .custom-form {
+       padding: 120px;
+
+
+    }
+</style>
+<div class="container custom-form">
+{{ render_form(form,novalidate=True,button_map={"submit": "primary"}) }}
+
+</div>
+<!--{% include 'header.html' %}-->
+<!--<div class="container">-->
+<!--  <div class="row">-->
+<!--    <div class="col-2">hello</div>-->
+<!--    <div class="col-4">hello</div>-->
+<!--    <div class="col-6">hello</div>-->

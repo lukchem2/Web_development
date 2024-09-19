@@ -1,0 +1,34 @@
+{% include 'header.html' %}
+<div class="container">
+  {% for x in results %}
+    <div class="row" style="padding-top: 35px">
+      <!-- Left Content: Card -->
+    <a href="{{ url_for('get_cafe') }}" target="_blank">
+      <div class="col-4">
+          <div class="card-img-top">
+            <img src="{{x.img_url}}" style="max-width: 200px;">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">{{ x.name }}</h3>
+            <span>
+              <i class="fa fa-location-arrow"></i>
+              <a href="{{x.map_url}}" target="_blank">Check my location</a>
+            </span>
+          </div>
+      </div>
+      </a>
+
+      <div class="col-8">
+        <hr>
+        <p>Location- {{x.location}}</p>
+        <p>Seats- {{x.seats}}</p>
+        <p>Coffee price- {{x.coffee_price}}</p>
+        <hr>
+      </div>
+
+      <!-- Right Content: Blablabla Text -->
+
+    </div>
+  {% endfor %}
+</div>
+{% include 'footer.html' %}
