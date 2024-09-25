@@ -1,0 +1,25 @@
+{% include 'header.html' %}
+ <div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+      <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis">{{ entry.name }}</h1>
+
+        <p class="lead">{{ entry.location }}</p>
+        {% for x in dictio %}
+         {% if entry[x] == 0 %}
+          <p>{{ x }} -- <span class="text-danger">NO</span></p>
+         {% elif entry[x] == 1 %}
+          <p>{{ x }} -- <span class="text-success">YES</span></p>
+         {% elif x == "map_url" %}
+           <p ><a href="{{entry[x] }}" class="text-primary">location on the map</a></p>
+         {% else %}
+          <p>{{x }} -- {{ entry[x] }}</p>
+         {% endif %}
+        {% endfor %}
+      </div>
+      <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+          <img class="rounded-lg-3" src="{{ entry.img_url}}" alt="" width="720">
+      </div>
+    </div>
+  </div>
+{% include 'footer.html' %}

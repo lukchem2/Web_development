@@ -1,7 +1,8 @@
-from flask import Flask, render_template, url_for, flash,redirect
+from flask import Flask, render_template, url_for, flash,redirect, request
 from forms import LoginForm, RegisterForm,AddcityForm
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
+import sqlite3
 from sqlalchemy import create_engine,MetaData,Table,select
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, Text, ForeignKey, String, URL
@@ -32,19 +33,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
-# "unnecessary  from line 35 to line 47"
-# engine = create_engine('sqlite:///instance/cafes.db')
-# connection = engine.connect()
-# metadata = MetaData()
-# metadata.reflect(bind=engine)
-# users_table = metadata.tables['cafe']
-#
-# # Create a query to select all records from the users table
-# query = select(users_table)
-#
-# # Execute the query
-# result = connection.execute(query)
-# results = result.fetchall()
 
 class Users(db.Model,UserMixin):
     __tablename__ = "users"
@@ -52,6 +40,7 @@ class Users(db.Model,UserMixin):
     name: Mapped[str] = mapped_column(String(250), nullable=False)
     email: Mapped[str] = mapped_column(String(250),unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(250), nullable=False)
+
 
 class Cafe(db.Model):
     __tablename__ = "cafe"
@@ -71,15 +60,6 @@ class Cafe(db.Model):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-#"muj kod " ????
-    # def __init__(self, **kwargs):
-    #     for key, value in kwargs.items():
-    #         setattr(self,key,value)
-
-
-
-
-
 
 with app.app_context():
     db.create_all()
@@ -98,11 +78,7 @@ def get_logged():
         user = db.session.execute(db.select(Users).where(Users.email == log_form.email.data)).scalar()
         if user and check_password_hash(user.password, log_form.password.data):
             login_user(user)
-            print(user.is_active)
-            print(user.is_authenticated)
-            print(user.is_anonymous)
-            print(user.get_id())
-            return render_template("index.html", results = results)
+            return redirect(url_for('home'))
         elif user:
             flash("You have entered a wrong password, please try again")
         else:
@@ -122,6 +98,7 @@ def get_register():
                      method="pbkdf2",salt_length=14))
         db.session.add(user)
         db.session.commit()
+        login_user(user)
     return render_template("register.html", form=reg_form)
 
 @app.route("/list")
@@ -129,8 +106,10 @@ def get_list():
     all = db.get_or_404()
 
 @app.route("/add", methods=["POST","GET"])
+@login_required
 def get_add():
     addform = AddcityForm()
+    results = db.session.execute(db.select(Cafe)).scalars().all()
     if addform.validate_on_submit():
         cafe = Cafe(**addform.data)
         db.session.add(cafe)
@@ -140,15 +119,24 @@ def get_add():
 
     return render_template("add.html",form = addform)
 
-@app.route("/cafe")
+@app.route("/cafe",methods=["POST","GET"])
 def get_cafe():
-    return "<p>hello</p>"
+    print("akuku")
+    x = request.args.get("x")
+    entry = db.get_or_404(Cafe,x)
+    print(entry.__dict__)
+    # dictio = [x  for x in entry.__dict__.keys() if x != "_sa_instance_state" and x != "img_url" and x != "id"]
+    dictio = sorted([x  for x in entry.__dict__.keys() if x not in  ["_sa_instance_state","img_url","id","location"]])
+    print(dictio)
+
+    print(f"this is diction {dictio}")
+    return render_template("details.html",entry = entry, dictio = dictio)
+
 
 
 
 @app.route("/log out",methods=["POST","GET"])
 def get_log_out():
-
     logout_user()
 
     return redirect(url_for('home'))

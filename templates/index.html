@@ -3,7 +3,7 @@
   {% for x in results %}
     <div class="row" style="padding-top: 35px">
       <!-- Left Content: Card -->
-    <a href="{{ url_for('get_cafe') }}" target="_blank">
+    <a href="{{ url_for('get_cafe',x = x.id) }}">
       <div class="col-4">
           <div class="card-img-top">
             <img src="{{x.img_url}}" style="max-width: 200px;">
